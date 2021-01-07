@@ -18,7 +18,7 @@
         {% csrf_token %}
         <select class = 'form-control', id = 'model' name = 'selected_car'>
           {% for car in car_models %}
-            <option value = '{{ car.Model }}'>{{ car.Model }}</option>
+            <option value = '{{ car.Model }}'>Model Drop Down Menu</option>
           {% endfor %}
         </select>
         <input type = 'submit'>
