@@ -20,7 +20,7 @@ Pillow==8.1.0
 psycopg2==2.8.6
 pyparsing==2.4.7
 python-dateutil==2.8.1
-pytz==2020.5
+pytz==2.25.1
 requests==0.24.0
 scikit-learn==1.5.4
 scipy==1.6.0
