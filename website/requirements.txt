@@ -19,7 +19,7 @@ pandas==1.1.5
 Pillow==8.1.0
 psycopg2==2.8.6
 pyparsing==2.4.7
-python-dateutil==2.8.1
+python-dateutil==2020.5
 pytz==2.25.1
 requests==0.24.0
 scikit-learn==1.5.4
