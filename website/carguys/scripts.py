@@ -84,6 +84,15 @@ def to_database_presale(data_table):
 #     return response
 
 def database_update():
+    def site_login(url_to_login, url_to_post):
+        login = s.get(url_to_login)
+        login_html = lxml.html.fromstring(login.text)
+        hidden_inputs = login_html.xpath(r'//form//input[@type = "hidden"]')
+        form = {x.attrib['name']: x.attrib['value'] for x in hidden_inputs}
+        form['username'] = 'ethan123'
+        form['password'] = 'Owasso918'
+        response = s.post(url_to_post, data = form)
+        return response
     s= requests.session()
     site_login('https://www.edgepipeline.com/components/login','https://www.edgepipeline.com/components/login/attempt')
     result = s.get('https://www.edgepipeline.com/components/report/postsale/csv/z66aa-all').content
