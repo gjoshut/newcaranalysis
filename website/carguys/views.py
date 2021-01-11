@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from .models import Postsales, Presale
-from .scripts import price_estimator, to_database_presale, add_new_to_database, database_update
+from .scripts import price_estimator, to_database_presale, add_new_to_database, database_update, to_database_postsale
 from pandas.io.parsers import ParserError
 
 
