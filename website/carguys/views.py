@@ -9,6 +9,11 @@ from pandas.io.parsers import ParserError
 
 
 def home(request):
+    if not Postsales.objects.all():
+        data = database_update()
+        to_database_postsale(data)
+    else:
+        add_new_to_database(Postsales)
     return render(request, 'carguys/base.html')
 
 def presale_set_up(request):
