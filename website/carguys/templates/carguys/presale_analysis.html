@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Owasso Car Guys | Used cars | knowledgable staff | black leather gloves </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" type = "text/css" href="{% static 'style.css' %}">
+  </head>
+  <body>
+    <div class="logoWrapper">
+      <a id='h1Logo' aria-label='Dealer Logo' href="//www.owassocarguys.com">
+        <img src="https://imagescdn.dealercarsearch.com/dealerimages/17191/21529/logo3.png" alt="Owasso Car Guys logo"></a>
+    </div>
+    <div class = 'tables' style = "display:inline-block">
+    <div class='first' style="float:left">
+      <table class = 'table table-bordered'>
+        <thead>
+          <tr>
+            <th scope ="col">Model</th>
+            <th scope ="col">Run Number</th>
+            <th scope ="col">Style</th>
+            <th scope ="col">Odometer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          {% if selected_model %}
+            {% for result in selected_model %}
+              <td>{{ result.Model }}</td>
+              <td>{{ result.Run_number }}</td>
+              <td>{{ result.Style }}</td>
+              <td>{{ result.Odometer }}</td>
+            </tr>
+            {% endfor %}
+          {% endif %}
+      </table>
+    </div>
+      <div class = "first" style = "float:left">
+        <table class = 'table table-bordered'>
+          <thead>
+            <tr>
+              <th scope = "col">Predicted Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            {% for price in list_of_results %}
+              <td>${{ price }}</td>
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+    <div class= "clearfix"></div>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+
+
+.logoWrapper {
+  text-align: justify;
+  background-color: green;
+}
+
+.listOfLinks {
+  position:absolute;
+  top: 200px;
+  left: 300px;
+}
+
+li a {
+  color: black;
+  text-align: center;
+}
+
+.first {
+  width: 50px;
+  float: left;
+}
+
+.clearfix {
+  clear:both;
+}
