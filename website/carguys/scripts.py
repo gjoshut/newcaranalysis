@@ -198,6 +198,8 @@ def regression_dictionary_maker():
         return dictionary
     answer = regression_maker(car_models)
     return answer
+
+
     # for car in range(len(presale_list['Year'])):
     #     subset=data.query("Model==@presale_list['Model'].iloc[@car]")
     #     if subset.empty:

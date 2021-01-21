@@ -34,8 +34,11 @@ def presale_analysis(request):
     selected_model = Presale.objects.filter(Model = request.POST['selected_car']).all()
     regression_dictionary = regression_dictionary_maker()
     list_of_results = [int(np.round(regression_dictionary[car.Model].predict([[car.Year, car.Odometer]]), 2)**2) for car in selected_model]
+    for car in selected_model:
+        result = list_of_results.pop(0)
+        car.predicted_price = result
     # equation = regression_dictionary[selected_model]
     #context = {'equation':equation}
-    return render(request, 'carguys/presale_analysis.html', {'selected_model': selected_model, 'list_of_results': list_of_results})
+    return render(request, 'carguys/presale_analysis.html', {'selected_model': selected_model})
 
     # # Create your views here.
