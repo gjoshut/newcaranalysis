@@ -165,11 +165,14 @@ def presale_list_grabber():
     if not Presale.objects.all():
         to_database_presale(presale_list)
     else:
-        old_data = read_frame(Presale.objects.all())
-        old_data = old_data.drop(['id'], axis = 1)
-        new_data = presale_list[~presale_list.isin(old_data)].dropna()
+        # old_data = read_frame(Presale.objects.all())
+        # old_data = old_data.drop(['id'], axis = 1)
+        # new_data = presale_list[~presale_list.isin(old_data)].dropna()
         Presale.objects.exclude(Day = date.today()).delete()
-        to_database_presale(new_data)
+        to_database_presale(presale_list)
+        for row in Presale.objects.all().reverse():
+            if Presale.objects.filter(VIN = row.VIN).count() > 1:
+                row.delete()
     # presale_list = prep_data_presale(presale_list)
     # data = read_frame(Postsales.objects.all())
     # data = data.drop(['id'], axis = 1)
