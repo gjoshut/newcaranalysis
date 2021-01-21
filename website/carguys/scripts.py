@@ -174,6 +174,20 @@ def presale_list_grabber():
     # data = read_frame(Postsales.objects.all())
     # data = data.drop(['id'], axis = 1)
     # data['sqrt_price']=[sqrt(x) for x in data['Price']]
+def regression_maker(car_model):
+    regr = LinearRegression()
+    queryset = Postsales.objects.filter(Model = car_model)
+    cars = queryset.values_list('Year', 'Odometer', 'Price')
+    cars_year = [x for (x,y,z) in cars]
+    cars_odometer = [y for (x,y,z) in cars]
+    cars_price = [sqrt(z) for (x,y,z) in cars]
+    dict_for_frame = {'Year':cars_year, 'Odometer':cars_odometer, 'Price':cars_price}
+    dataframe = pd.DataFrame(dict_for_frame)
+    X = dataframe[['Year', 'Odometer']]
+    y = dataframe[['Price']]
+    to_predict = regr.fit(X,y)
+    return to_predict
+
 def regression_dictionary_maker():
     regr = LinearRegression()
     car_models = Presale.objects.order_by().values('Model').distinct().all()
@@ -242,68 +256,70 @@ def regression_dictionary_maker():
 #     return presale_list
 
 def market_tracker():
-    def prev_wednesday(adate):
-        adate-= timedelta(days=1)
-        while adate.weekday()!=2:
-            adate-= timedelta(days=1)
-        return adate
-    def prev_friday(adate):
-        adate-= timedelta(days=1)
-        while adate.weekday()!=4:
-            adate-= timedelta(days=1)
-        return adate
-    def day_checker():
-        check=0
-        dates=[]
-        add=prev_friday(datetime.now())
-        dates.append(add)
-        add=prev_wednesday(add)
-        dates.append(add)
-        while check<=4:
-            add=prev_friday(add)
-            dates.append(add)
-            check+=1
-            add=prev_wednesday(add)
-            dates.append(add)
-            check+1
-        return dates
-    def site_login(url_to_login, url_to_post):
-        login = s.get(url_to_login)
-        login_html = lxml.html.fromstring(login.text)
-        hidden_inputs = login_html.xpath(r'//form//input[@type = "hidden"]')
-        form = {x.attrib['name']: x.attrib['value'] for x in hidden_inputs}
-        form['username'] = 'ethan123'
-        form['password'] = 'Owasso918'
-        response = s.post(url_to_post, data = form)
-        return response
-    def prep_data_data(data_frame):
-        data_frame['Year']=pd.to_numeric(data_frame['Year'], errors='coerce')
-        data_frame['Odometer']=pd.to_numeric(data_frame['Odometer'], errors='coerce')
-        data_frame['Price']=pd.to_numeric(data_frame['Price'], errors='coerce')
-        data_frame['Grade']=pd.to_numeric(data_frame['Grade'], errors='coerce')
-        data_frame['Sale Date']=pd.to_datetime(data_frame['Sale Date'], errors='coerce')
-        data_frame = data_frame.dropna()
-        return data_frame
-    def prep_data_presale(data_frame):
-        data_frame['Year']=pd.to_numeric(data_frame['Year'], errors='coerce')
-        data_frame['Odometer']=pd.to_numeric(data_frame['Odometer'], errors='coerce')
-        data_frame['Grade']=pd.to_numeric(data_frame['Grade'], errors='coerce')
-        data_frame['Sale Date']=pd.to_datetime(data_frame['Sale Date'], errors='coerce')
-        data_frame = data_frame.dropna()
-        return data_frame
-    s= requests.session()
-    site_login('https://www.edgepipeline.com/components/login','https://www.edgepipeline.com/components/login/attempt')
-    data=pd.DataFrame()
-    dates=day_checker()
-    urls=['https://www.edgepipeline.com/components/report/postsale/csv/z66aa-all/%s/%s/%s' % (x.year, x.month, x.day) for x in dates]
-    for i in urls:
-        result=s.get(i).content
-        try:
-            result = pd.read_csv(io.StringIO(result.decode('utf-8')))
-        except:
-            result = pd.DataFrame()
-        data= data.append(result)
-    def car_search(point,database,path):
+    # def prev_wednesday(adate):
+    #     adate-= timedelta(days=1)
+    #     while adate.weekday()!=2:
+    #         adate-= timedelta(days=1)
+    #     return adate
+    # def prev_friday(adate):
+    #     adate-= timedelta(days=1)
+    #     while adate.weekday()!=4:
+    #         adate-= timedelta(days=1)
+    #     return adate
+    # def day_checker():
+    #     check=0
+    #     dates=[]
+    #     add=prev_friday(datetime.now())
+    #     dates.append(add)
+    #     add=prev_wednesday(add)
+    #     dates.append(add)
+    #     while check<=4:
+    #         add=prev_friday(add)
+    #         dates.append(add)
+    #         check+=1
+    #         add=prev_wednesday(add)
+    #         dates.append(add)
+    #         check+1
+    #     return dates
+    # def site_login(url_to_login, url_to_post):
+    #     login = s.get(url_to_login)
+    #     login_html = lxml.html.fromstring(login.text)
+    #     hidden_inputs = login_html.xpath(r'//form//input[@type = "hidden"]')
+    #     form = {x.attrib['name']: x.attrib['value'] for x in hidden_inputs}
+    #     form['username'] = 'ethan123'
+    #     form['password'] = 'Owasso918'
+    #     response = s.post(url_to_post, data = form)
+    #     return response
+    # def prep_data_data(data_frame):
+    #     data_frame['Year']=pd.to_numeric(data_frame['Year'], errors='coerce')
+    #     data_frame['Odometer']=pd.to_numeric(data_frame['Odometer'], errors='coerce')
+    #     data_frame['Price']=pd.to_numeric(data_frame['Price'], errors='coerce')
+    #     data_frame['Grade']=pd.to_numeric(data_frame['Grade'], errors='coerce')
+    #     data_frame['Sale Date']=pd.to_datetime(data_frame['Sale Date'], errors='coerce')
+    #     data_frame = data_frame.dropna()
+    #     return data_frame
+    # def prep_data_presale(data_frame):
+    #     data_frame['Year']=pd.to_numeric(data_frame['Year'], errors='coerce')
+    #     data_frame['Odometer']=pd.to_numeric(data_frame['Odometer'], errors='coerce')
+    #     data_frame['Grade']=pd.to_numeric(data_frame['Grade'], errors='coerce')
+    #     data_frame['Sale Date']=pd.to_datetime(data_frame['Sale Date'], errors='coerce')
+    #     data_frame = data_frame.dropna()
+    #     return data_frame
+    # s= requests.session()
+    # site_login('https://www.edgepipeline.com/components/login','https://www.edgepipeline.com/components/login/attempt')
+    # data=pd.DataFrame()
+    # dates=day_checker()
+    # urls=['https://www.edgepipeline.com/components/report/postsale/csv/z66aa-all/%s/%s/%s' % (x.year, x.month, x.day) for x in dates]
+    # for i in urls:
+    #     result=s.get(i).content
+    #     try:
+    #         result = pd.read_csv(io.StringIO(result.decode('utf-8')))
+    #     except:
+    #         result = pd.DataFrame()
+    #     data= data.append(result)
+    def car_search(car,year,point,database,path):
+        queryset = Postsales.objects.filter(Model = car).filter(Year = year)
+
         fig=plt.figure()
         ax=fig.add_subplot(1,1,1)
         for i in range(len(point['Year'])):

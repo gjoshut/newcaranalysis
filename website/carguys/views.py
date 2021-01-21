@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 from .models import Postsales, Presale
-from .scripts import presale_list_grabber,regression_dictionary_maker, to_database_presale, add_new_to_database, database_update, to_database_postsale
+from .scripts import presale_list_grabber,regression_maker, to_database_presale, add_new_to_database, database_update, to_database_postsale
 from pandas.io.parsers import ParserError
 import numpy as np
 
@@ -31,9 +31,9 @@ def presale_choice(request):
 
 
 def presale_analysis(request):
-    selected_model = Presale.objects.filter(Model = request.POST['selected_car']).all()
-    regression_dictionary = regression_dictionary_maker()
-    list_of_results = [int(np.round(regression_dictionary[car.Model].predict([[car.Year, car.Odometer]]), 2)**2) for car in selected_model]
+    selected_model = Presale.objects.filter(Model = request.POST['selected_car'])
+    regression_dictionary = regression_maker(request.POST['selected_car'])
+    list_of_results = [int(np.round(regression_dictionary.predict([[car.Year, car.Odometer]]), 2)**2) for car in selected_model]
     for car in selected_model:
         result = list_of_results.pop(0)
         car.predicted_price = result
