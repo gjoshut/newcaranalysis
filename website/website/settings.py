@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 CRONJOBS = [
 ('* * * * 1', 'carguys.cron.my_scheduled_job'),
+('0 */2 * * *', 'carguys.cron.presale_list_grabber'),
 
 ]
 

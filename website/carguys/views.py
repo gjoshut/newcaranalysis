@@ -16,7 +16,7 @@ def presale_set_up(request):
     #render(request, 'carguys/presale_set_up.html')
     # presale_list = price_estimator()
     # to_database_presale(presale_list)
-    presale_list_grabber()
+    #presale_list_grabber()
     return HttpResponseRedirect(reverse('presale_choice'))
 
 def presale_choice(request):
