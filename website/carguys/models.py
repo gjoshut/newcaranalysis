@@ -18,7 +18,6 @@ class Presale(models.Model):
     Lot = models.CharField(max_length = 200)
     VIN = models.CharField(max_length = 200)
     Day = models.DateField(default = date.today())
-    Predicted_Price = models.FloatField(default = 0, null = True)
     class Meta:
         ordering = ('Model',)
 

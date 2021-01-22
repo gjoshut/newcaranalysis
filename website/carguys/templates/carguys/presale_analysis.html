@@ -13,11 +13,13 @@
       <a id='h1Logo' aria-label='Dealer Logo' href="//www.owassocarguys.com">
         <img src="https://imagescdn.dealercarsearch.com/dealerimages/17191/21529/logo3.png" alt="Owasso Car Guys logo"></a>
     </div>
-    <div class = 'ListOfResults'>
-      <table class = 'table table-bordered' style = "width:75%">
+    <div class = 'tables' style = "display:inline-block">
+    <div class='first'>
+      <table class = 'table table-bordered'>
         <thead>
           <tr>
             <th scope ="col">Model</th>
+            <th scope ="col">Year</th>
             <th scope ="col">Run Number</th>
             <th scope ="col">Style</th>
             <th scope ="col">Odometer</th>
@@ -29,15 +31,16 @@
           {% if selected_model %}
             {% for result in selected_model %}
               <td>{{ result.Model }}</td>
+              <td>{{ result.Year }}</td>
               <td>{{ result.Run_number }}</td>
               <td>{{ result.Style }}</td>
               <td>{{ result.Odometer }}</td>
-              <td>${{ result.Predicted_Price }}</td>
-          </tr>
-          {% endfor %}
-        {% endif %}
-        </tbody>
+              <td>${{ result.predicted_price }}</td>
+            </tr>
+            {% endfor %}
+          {% endif %}
       </table>
+    </div>
     </div>
   </body>
 </html>

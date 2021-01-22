@@ -15,3 +15,11 @@ li a {
   color: black;
   text-align: center;
 }
+
+.first {
+  float: left;
+}
+
+.clearfix {
+  clear:both;
+}
